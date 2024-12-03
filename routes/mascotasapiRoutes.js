@@ -1,25 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const mascotasController = require('../controladores/mascotasapiController');
+const mascotasController = require('../controladores/mascotasapiController'); // Ajusta la ruta si es necesario
 
-// Middleware para manejar errores
-const errorHandler = (err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Error interno del servidor' });
-};
-
-// Ruta para obtener todas las mascotas
-router.get('/mascotas', async (req, res, next) => {
+// Obtener todas las mascotas
+router.get('/', async (req, res, next) => { 
     try {
         const mascotas = await mascotasController.obtenerMascotas(); // Llama al controlador para obtener las mascotas
         res.json(mascotas);
     } catch (error) {
-        next(error); // Si hay un error, lo pasa al middleware de errores
+        next(error); // Pasa el error al middleware
     }
 });
 
-// Ruta para obtener una mascota por ID
-router.get('/mascotas/:id', async (req, res, next) => {
+// Obtener una mascota por ID
+router.get('/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
         const mascota = await mascotasController.obtenerMascotaPorId(id); // Llama al controlador para obtener la mascota por ID
@@ -28,12 +22,12 @@ router.get('/mascotas/:id', async (req, res, next) => {
         }
         res.json(mascota);
     } catch (error) {
-        next(error); // Si hay un error, lo pasa al middleware de errores
+        next(error); // Pasa el error al middleware
     }
 });
 
-// Ruta para agregar una nueva mascota
-router.post('/mascotas', async (req, res, next) => {
+// Agregar una nueva mascota
+router.post('/', async (req, res, next) => {
     try {
         const { nombre, tipo, disponibilidad = 1, foto = null } = req.body;
         if (!nombre || !tipo) {
@@ -46,8 +40,8 @@ router.post('/mascotas', async (req, res, next) => {
     }
 });
 
-// Ruta para actualizar una mascota
-router.put('/mascotas/:id', async (req, res, next) => {
+// Actualizar una mascota
+router.put('/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
         const { nombre, tipo, disponibilidad, foto } = req.body;
@@ -61,8 +55,8 @@ router.put('/mascotas/:id', async (req, res, next) => {
     }
 });
 
-// Ruta para eliminar una mascota
-router.delete('/mascotas/:id', async (req, res, next) => {
+// Eliminar una mascota
+router.delete('/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
         await mascotasController.eliminarMascota(id); // Llama al controlador para eliminar una mascota
@@ -71,8 +65,5 @@ router.delete('/mascotas/:id', async (req, res, next) => {
         next(error); // Si hay un error, lo pasa al middleware de errores
     }
 });
-
-// Usar el middleware de manejo de errores
-router.use(errorHandler);
 
 module.exports = router;
