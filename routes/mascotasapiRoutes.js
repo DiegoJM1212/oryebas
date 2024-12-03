@@ -3,7 +3,7 @@ const router = express.Router();
 const mascotasController = require('../controladores/mascotasapiController'); // Ajusta la ruta si es necesario
 
 // Obtener todas las mascotas
-router.get('/', async (req, res, next) => { 
+router.get('/mascotas', async (req, res, next) => { 
     try {
         const mascotas = await mascotasController.obtenerMascotas(); // Llama al controlador para obtener las mascotas
         res.json(mascotas);
@@ -13,7 +13,7 @@ router.get('/', async (req, res, next) => {
 });
 
 // Obtener una mascota por ID
-router.get('/:id', async (req, res, next) => {
+router.get('/mascotas:id', async (req, res, next) => {
     try {
         const { id } = req.params;
         const mascota = await mascotasController.obtenerMascotaPorId(id); // Llama al controlador para obtener la mascota por ID
@@ -27,7 +27,7 @@ router.get('/:id', async (req, res, next) => {
 });
 
 // Agregar una nueva mascota
-router.post('/', async (req, res, next) => {
+router.post('/mascotas', async (req, res, next) => {
     try {
         const { nombre, tipo, disponibilidad = 1, foto = null } = req.body;
         if (!nombre || !tipo) {
@@ -41,7 +41,7 @@ router.post('/', async (req, res, next) => {
 });
 
 // Actualizar una mascota
-router.put('/:id', async (req, res, next) => {
+router.put('/mascotas:id', async (req, res, next) => {
     try {
         const { id } = req.params;
         const { nombre, tipo, disponibilidad, foto } = req.body;
@@ -56,7 +56,7 @@ router.put('/:id', async (req, res, next) => {
 });
 
 // Eliminar una mascota
-router.delete('/:id', async (req, res, next) => {
+router.delete('/mascotas:id', async (req, res, next) => {
     try {
         const { id } = req.params;
         await mascotasController.eliminarMascota(id); // Llama al controlador para eliminar una mascota
